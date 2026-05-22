@@ -35,17 +35,18 @@ namespace Commands
         }
         else if (sub_cmd == "EVEN" || sub_cmd == "ODD")
         {
-            size_t index = 0;
+            double sum = 0.0;
             bool target_even = (sub_cmd == "EVEN");
 
-            double sum = std::accumulate(polygons.cbegin(), polygons.cend(), 0.0,
-                                         [&index, target_even](double acc, const Polygon &p)
-                                         {
-                                             bool is_even_index = (index % 2 == 0);
-                                             bool is_target_index = (is_even_index == target_even);
-                                             index++;
-                                             return acc + (is_target_index ? Geometry::get_area(p) : 0.0);
-                                         });
+            for (const auto &p : polygons)
+            {
+                bool is_even_vertices = (p.points.size() % 2 == 0);
+
+                if (is_even_vertices == target_even)
+                {
+                    sum += Geometry::get_area(p);
+                }
+            }
             out << sum << '\n';
         }
         else
