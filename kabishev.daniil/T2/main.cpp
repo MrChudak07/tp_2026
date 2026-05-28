@@ -2,25 +2,25 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <sstream>
 #include "data_struct.hpp"
 
 int main() {
     std::vector<kabishev::DataStruct> data;
+    std::string line;
 
-    std::copy(
-        std::istream_iterator<kabishev::DataStruct>(std::cin),
-        std::istream_iterator<kabishev::DataStruct>(),
-        std::back_inserter(data)
-    );
-
-    if (!std::cin && !std::cin.eof()) {
-        std::cerr << "Ошибка при чтении данных!\n";
-        return 1;
+    while (std::getline(std::cin, line)) {
+        if (line.empty()) {
+            continue;
+        }
+        std::stringstream ss(line);
+        kabishev::DataStruct temp;
+        if (ss >> temp) {
+            data.push_back(temp);
+        }
     }
 
     std::sort(data.begin(), data.end(), kabishev::compareDataStruct);
-
-    std::cout << "\n";
 
     std::copy(
         data.begin(),

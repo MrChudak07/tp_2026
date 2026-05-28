@@ -8,9 +8,9 @@
 namespace kabishev {
 
     struct DataStruct {
-        char key1;
-        std::pair<long long, unsigned long long> key2;
-        std::string key3;
+        std::pair<long long, unsigned long long> key1; // RAT LSP (:N 1:D 2:)
+        unsigned long long key2;                       // ULL HEX 0xFA
+        std::string key3;                              // String "Data"
     };
 
     std::istream& operator>>(std::istream& in, DataStruct& input);
