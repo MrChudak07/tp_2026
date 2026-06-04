@@ -14,6 +14,8 @@ struct Polygon
     std::vector<Point> points;
     size_t vertexCount() const { return points.size(); }
     double area() const;
+    bool operator==(const Polygon& other) const;
+    bool hasRightAngle();
 };
 
 #endif
