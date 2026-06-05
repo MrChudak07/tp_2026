@@ -3,23 +3,41 @@
 #include <sstream>
 #include <cmath>
 
-std::istream &operator>>(std::istream &in, DelimiterIO &&) { return in; }
-std::istream &operator>>(std::istream &in, LabelIO &&) { return in; }
+std::istream &operator>>(
+    std::istream &in,
+    DelimiterIO &&)
+{
+  return in;
+}
 
-std::istream &operator>>(std::istream &in, DataStruct &dest)
+std::istream &operator>>(
+    std::istream &in,
+    LabelIO &&)
+{
+  return in;
+}
+
+std::istream &operator>>(
+    std::istream &in,
+    DataStruct &dest)
 {
   std::string line;
   if (!std::getline(in, line))
+  {
     return in;
+  }
   if (line.empty())
+  {
     return in;
+  }
 
   if (!line.empty() && line.back() == '\r')
   {
     line.pop_back();
   }
 
-  if (line.find('(') == std::string::npos || line.find(')') == std::string::npos)
+  bool missingBrackets = line.find('(') == std::string::npos || line.find(')') == std::string::npos;
+  if (missingBrackets)
   {
     in.setstate(std::ios::failbit);
     return in;
@@ -29,7 +47,8 @@ std::istream &operator>>(std::istream &in, DataStruct &dest)
   std::size_t p2 = line.find(":key2");
   std::size_t p3 = line.find(":key3");
 
-  if (p1 == std::string::npos || p2 == std::string::npos || p3 == std::string::npos)
+  bool missingKeys = p1 == std::string::npos || p2 == std::string::npos || p3 == std::string::npos;
+  if (missingKeys)
   {
     in.setstate(std::ios::failbit);
     return in;
@@ -49,7 +68,9 @@ std::istream &operator>>(std::istream &in, DataStruct &dest)
     in.setstate(std::ios::failbit);
     return in;
   }
-  std::string c_sub = line.substr(c_start + 3, c_end - c_start - 3);
+  std::string c_sub = line.substr(
+      c_start + 3,
+      c_end - c_start - 3);
   std::stringstream c_ss(c_sub);
   double re, im;
   if (c_ss >> re >> im)
@@ -68,10 +89,13 @@ std::istream &operator>>(std::istream &in, DataStruct &dest)
     in.setstate(std::ios::failbit);
     return in;
   }
-  std::string k2_sub = line.substr(p2 + 5, col_after_k2 - p2 - 5);
+  std::string k2_sub = line.substr(
+      p2 + 5,
+      col_after_k2 - p2 - 5);
 
-  if (k2_sub.find_first_of("eE") == std::string::npos ||
-      k2_sub.find_first_of("dDlLuU'#(") != std::string::npos)
+  bool hasNoE = k2_sub.find_first_of("eE") == std::string::npos;
+  bool hasBadChars = k2_sub.find_first_of("dDlLuU'#(") != std::string::npos;
+  if (hasNoE || hasBadChars)
   {
     in.setstate(std::ios::failbit);
     return in;
@@ -100,21 +124,30 @@ std::istream &operator>>(std::istream &in, DataStruct &dest)
     in.setstate(std::ios::failbit);
     return in;
   }
-  input.key3 = line.substr(q_start + 1, q_end - q_start - 1);
+  input.key3 = line.substr(
+      q_start + 1,
+      q_end - q_start - 1);
 
   dest = input;
   return in;
 }
 
-std::ostream &operator<<(std::ostream &out, const DataStruct &src)
+std::ostream &operator<<(
+    std::ostream &out,
+    const DataStruct &src)
 {
   std::ostream::sentry sentry(out);
   if (!sentry)
+  {
     return out;
+  }
 
-  out << "(:key1 #c(" << std::fixed << std::setprecision(1) << src.key1.real()
-      << " " << src.key1.imag() << ")"
-      << ":key2 " << std::scientific << std::setprecision(1) << src.key2
-      << ":key3 \"" << src.key3 << "\":)";
+  out << "(:key1 #c(";
+  out << std::fixed << std::setprecision(1) << src.key1.real();
+  out << " " << src.key1.imag() << ")";
+  out << ":key2 ";
+  out << std::scientific << std::setprecision(1) << src.key2;
+  out << ":key3 \"" << src.key3 << "\":)";
+
   return out;
 }

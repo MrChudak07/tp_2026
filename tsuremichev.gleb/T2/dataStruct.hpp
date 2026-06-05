@@ -7,25 +7,43 @@
 
 struct DataStruct
 {
-  std::complex<double> key1; // CMP LSP
-  double key2;               // DBL SCI
+  std::complex<double> key1;
+  double key2;
   std::string key3;
 
-  DataStruct() {}
+  DataStruct() : key1(0.0, 0.0),
+                 key2(0.0),
+                 key3("")
+  {
+  }
 };
 
 struct DelimiterIO
 {
   char expected;
 };
+
 struct LabelIO
 {
   std::string expected;
 };
 
-std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
-std::istream &operator>>(std::istream &in, LabelIO &&dest);
-std::istream &operator>>(std::istream &in, DataStruct &dest);
-std::ostream &operator<<(std::ostream &out, const DataStruct &src);
+// Перегрузка операторов ввода
+std::istream &operator>>(
+    std::istream &in,
+    DelimiterIO &&dest);
 
-#endif
+std::istream &operator>>(
+    std::istream &in,
+    LabelIO &&dest);
+
+std::istream &operator>>(
+    std::istream &in,
+    DataStruct &dest);
+
+// Перегрузка оператора вывода
+std::ostream &operator<<(
+    std::ostream &out,
+    const DataStruct &src);
+
+#endif // DATASTRUCT_HPP
