@@ -5,7 +5,6 @@
 #include <map>
 #include "huffman.hpp"
 
-// Функция расчета энтропии Шеннона с использованием std::map
 double calculateEntropy(const std::string &text)
 {
   if (text.empty())
@@ -28,7 +27,8 @@ double calculateEntropy(const std::string &text)
 int main()
 {
   setlocale(LC_ALL, "Russian");
-  std::cout << "=== Курсовая работа: Алгоритм Хаффмана на стандартных библиотеках STL ===\n";
+  std::cout << "=== Курсовая работа: Алгоритм Хаффмана"
+            << "на стандартных библиотеках STL ===\n";
   std::cout << "Введите строку для сжатия: ";
 
   std::string userInput;
@@ -63,12 +63,16 @@ int main()
     double textEntropy = calculateEntropy(userInput);
     double avgCodeLen = compBits / (double)userInput.length();
 
-    std::cout << "\n==================================================================\n";
-    std::cout << "                     АНАЛИЗ ЭФФЕКТИВНОСТИ                         \n";
-    std::cout << "==================================================================\n";
+    std::cout << "\n=================================="
+              << "================================\n";
+    std::cout << "                     АНАЛИЗ ЭФФЕКТИВНОСТИ"
+              << "                         \n";
+    std::cout << "==========================================="
+              << "=======================\n";
     std::cout << "  Размер исходного текста        : " << origBits << " бит\n";
     std::cout << "  Размер сжатого битового потока : " << compBits << " бит\n";
-    std::cout << "  Информационная энтропия данных : " << std::fixed << std::setprecision(4) << textEntropy << " бит/символ\n";
+    std::cout << "  Информационная энтропия данных : " << std::fixed
+              << std::setprecision(4) << textEntropy << " бит/символ\n";
     std::cout << "  Средняя длина кода Хаффмана    : " << avgCodeLen << " бит/символ\n";
     std::cout << "  Коэффициент сжатия (Kсж)       : " << compressionRatio << "\n";
     std::cout << "==================================================================\n";
