@@ -17,7 +17,7 @@ void Analytics::printTop3(const std::unordered_map<std::string, int> &table) con
   }
   std::sort(all_words.begin(), all_words.end(), [](const auto &a, const auto &b)
             { return a.second > b.second; });
-  std::cout << "\n============ ТОП-3 САМЫХ ЧАСТЫХ СЛОВ ==========" << std::endl;
+  std::cout << "\n=========== ТОП-3 САМЫХ ЧАСТЫХ СЛОВ ==========" << std::endl;
   std::size_t limit = std::min(all_words.size(), static_cast<std::size_t>(3));
   for (std::size_t i = 0; i < limit; ++i)
   {
