@@ -15,8 +15,6 @@ void handleArea(const std::vector<Polygon> &polygons, std::istream &is)
   is >> arg;
 
   double totalArea = 0.0;
-  size_t count = 0;
-
   if (arg == "EVEN")
   {
     totalArea = std::accumulate(polygons.begin(),
