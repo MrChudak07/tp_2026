@@ -53,7 +53,6 @@ namespace nspace{
         DataStruct input;
         bool keys_valid[3] = {false, false, false};
         std::size_t keys_valid_size = sizeof(keys_valid) / sizeof(keys_valid[0]);
-        std::size_t key_valid_last = keys_valid_size - 1;
         std::string key_current;
         {
             using sep = DelimiterIO;

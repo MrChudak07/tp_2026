@@ -3,8 +3,8 @@
 namespace nspace{
     iofmtguard::iofmtguard(std::ios& s) :
      s_(s),
-     width_(s.width()),
      fill_(s.fill()),
+     width_(s.width()),
      precision_(s.precision()),
      fmt_(s.flags()) {}
 

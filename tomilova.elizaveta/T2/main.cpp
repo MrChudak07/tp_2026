@@ -30,7 +30,6 @@ int main(){
   // Сортировка по вектору с использованием operator<
   std::sort(data.begin(), data.end());
 
-  std::cout << "DataStruct:\n";
   // Вывод с использованием operator<<
   std::copy(
     data.begin(),
