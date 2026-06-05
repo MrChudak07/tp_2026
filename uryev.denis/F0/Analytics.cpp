@@ -24,5 +24,5 @@ void Analytics::printTop3(const std::unordered_map<std::string, int> &table) con
     std::cout << i + 1 << ". Слово: \"" << all_words[i].first
               << "\" встретилось " << all_words[i].second << " раз(а)." << std::endl;
   }
-  std::cout << "===================================================" << std::endl;
+  std::cout << "================================================" << std::endl;
 }
