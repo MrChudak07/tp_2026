@@ -1,4 +1,5 @@
 #include "Polygon.hpp"
+#include <limits>
 #include <numeric>
 #include <algorithm>
 #include <cmath>
@@ -27,7 +28,7 @@ std::istream &operator>>(std::istream &in, Point &dest)
   return in;
 }
 
-std::istream &operator>>(std::istream &in, Polygon &dest)
+std::istream& operator>>(std::istream& in, Polygon& dest)
 {
   std::istream::sentry sentry(in);
   if (!sentry)
@@ -56,13 +57,6 @@ std::istream &operator>>(std::istream &in, Polygon &dest)
       return in;
     }
   }
-  char extra = 0;
-  if (in >> extra)
-  {
-    in.setstate(std::ios::failbit);
-    return in;
-  }
-
   dest.points = std::move(tempPoints);
   return in;
 }
@@ -102,24 +96,34 @@ bool isPolygonEqual(const Polygon &a, const Polygon &b)
       isPointsEqual);
 }
 
-Frame getCollectionFrame(const std::vector<Polygon> &polygons)
+Frame getCollectionFrame(const std::vector<Polygon>& polygons)
 {
-  Frame f{{0, 0}, {0, 0}};
   if (polygons.empty())
-    return f;
-  f.minPoint.x = polygons[0].points[0].x;
-  f.minPoint.y = polygons[0].points[0].y;
-  f.maxPoint.x = polygons[0].points[0].x;
-  f.maxPoint.y = polygons[0].points[0].y;
-  std::for_each(polygons.begin(), polygons.end(), [&f](const Polygon &poly)
-                { std::for_each(poly.points.begin(), poly.points.end(), [&f](const Point &p)
-                                {
-      f.minPoint.x = std::min(f.minPoint.x, p.x);
-      f.minPoint.y = std::min(f.minPoint.y, p.y);
-      f.maxPoint.x = std::max(f.maxPoint.x, p.x);
-      f.maxPoint.y = std::max(f.maxPoint.y, p.y); }); });
-  return f;
+  {
+    return { {0, 0}, {0, 0} };
+  }
+
+  const int inf = std::numeric_limits<int>::max();
+  int minX = inf, minY = inf;
+  int maxX = -inf, maxY = -inf;
+  bool hasPoints = false;
+
+  for (const auto& poly : polygons)
+  {
+    for (const auto& p : poly.points)
+    {
+      if (p.x < minX) minX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y > maxY) maxY = p.y;
+      hasPoints = true;
+    }
+  }
+
+  if (!hasPoints) return { {0, 0}, {0, 0} };
+  return { {minX, minY}, {maxX, maxY} };
 }
+
 
 bool isPolygonInFrame(const Polygon &poly, const Frame &frame)
 {
